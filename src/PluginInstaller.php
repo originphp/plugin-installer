@@ -25,13 +25,15 @@ class PluginInstaller extends LibraryInstaller
 {
     public function getInstallPath(PackageInterface $package)
     {
-        list($plugin, $path) = $this->getPluginInfo($package);
-        return 'plugins/' . $plugin;
+        list($namespace,$name) = explode('/',$package->getPrettyName());
+
+       // list($plugin, $path) = $this->getPluginInfo($package);
+        return 'plugins/' . $name;
     }
     /*
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::install($repo, $package);
+        parent::install($repo, $package);$package->getPrettyName()
         list($plugin, $path) = $this->getPluginInfo($package);
         $this->updateTracker($plugin, $path);
     }
@@ -69,7 +71,7 @@ class PluginInstaller extends LibraryInstaller
      * @param PackageInterface $package
      * @return void
      */
-   
+    /*
     protected function getPluginInfo(PackageInterface $package)
     {
         $pluginName = null;
@@ -92,7 +94,7 @@ class PluginInstaller extends LibraryInstaller
         }
         return [$pluginName,$path];
     }
-   
+    */
     /**
      * This is how the type is setup
      */
