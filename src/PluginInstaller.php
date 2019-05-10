@@ -25,15 +25,13 @@ class PluginInstaller extends LibraryInstaller
 {
     public function getInstallPath(PackageInterface $package)
     {
-        list($namespace,$name) = explode('/',$package->getPrettyName());
-
-       // list($plugin, $path) = $this->getPluginInfo($package);
-        return 'plugins/' . $name;
+        list($plugin, $path) = $this->getPluginInfo($package);
+        return 'plugins/' . $plugin;
     }
-    /*
+   
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::install($repo, $package);$package->getPrettyName()
+        parent::install($repo, $package);
         list($plugin, $path) = $this->getPluginInfo($package);
         $this->updateTracker($plugin, $path);
     }
@@ -63,20 +61,22 @@ class PluginInstaller extends LibraryInstaller
         
         file_put_contents($filename, json_encode($data));
     }
-    */
-
+ 
     /**
      * Gets the plugin Name and path
      *
      * @param PackageInterface $package
      * @return void
      */
-    /*
     protected function getPluginInfo(PackageInterface $package)
     {
-        $pluginName = null;
         $path = $this->getInstallPath($package);
+        $pluginName = $this->getPluginName($package);
+        return [$pluginName,$path];
+    }
 
+    protected function getPluginName(PackageInterface $package){
+        $pluginName = null;
         $autoLoaders = $package->getAutoload();
         foreach ($autoLoaders as $type => $pathMap) {
             if ($type === 'psr-4') {
@@ -92,9 +92,9 @@ class PluginInstaller extends LibraryInstaller
                 }
             }
         }
-        return [$pluginName,$path];
+        return $pluginName;
     }
-    */
+    
     /**
      * This is how the type is setup
      */
