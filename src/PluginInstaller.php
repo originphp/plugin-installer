@@ -34,7 +34,9 @@ class PluginInstaller extends LibraryInstaller
         if(!empty($install)){
             return "plugins/{$extra['folder']}";
         }
-  
+        
+        file_put_contents($this->vendorDir. '/debug.json',json_encode($package));
+
         list($plugin, $path) = $this->getPluginName($package);
         if($plugin){
             return 'plugins/' . $this->underscore($plugin);
@@ -96,8 +98,6 @@ class PluginInstaller extends LibraryInstaller
         $pluginName = null;
         $autoLoaders = $package->getAutoload();
         
-        file_put_contents($this->vendorDir. '/debug.json',json_encode($autoLoaders));
-
         foreach ($autoLoaders as $type => $pathMap) {
             if ($type === 'psr-4') {
                 if (count($pathMap) == 1) {
