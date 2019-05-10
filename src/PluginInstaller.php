@@ -20,6 +20,7 @@ namespace Origin\Composer;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
+use RuntimeException;
 
 class PluginInstaller extends LibraryInstaller
 {
@@ -45,7 +46,9 @@ class PluginInstaller extends LibraryInstaller
 
     protected function updateTracker($plugin, $path)
     {
-        $filename = $this->vendorDir . DIRECTORY_SEPARATOR . 'originphp-plugins.json';
+        $directory = dirname($this->vendorDir);
+
+        $filename = $directory . DIRECTORY_SEPARATOR . 'originphp-plugins.json';
 
         if (!file_exists($filename)) {
             file_put_contents($filename, json_encode([]));
@@ -54,7 +57,7 @@ class PluginInstaller extends LibraryInstaller
         $data = json_decode(file_get_contents($filename), true);
         
         if ($path) {
-            $data[$plugin] = $path;
+            $data[$plugin] = $directory . DIRECTORY_SEPARATOR  . $path;
         } else {
             unset($data[$plugin]);
         }
@@ -78,6 +81,9 @@ class PluginInstaller extends LibraryInstaller
     protected function getPluginName(PackageInterface $package){
         $pluginName = null;
         $autoLoaders = $package->getAutoload();
+        
+        file_put_contents($this->vendorDir. '/debug.json',json_encode($autoLoaders));
+
         foreach ($autoLoaders as $type => $pathMap) {
             if ($type === 'psr-4') {
                 if (count($pathMap) == 1) {
@@ -92,6 +98,13 @@ class PluginInstaller extends LibraryInstaller
                 }
             }
         }
+
+        if (!$pluginName) {
+            throw new RuntimeException(
+                sprintf("Error getting Plugin name from namespace in package %s\nCheck that psr-4 autoloaders PluginName => 'src/' ",$package->getName())
+            );
+        }
+
         return $pluginName;
     }
     
