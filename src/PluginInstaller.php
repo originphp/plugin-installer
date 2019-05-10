@@ -23,44 +23,43 @@ use Composer\Repository\InstalledRepositoryInterface;
 
 class PluginInstaller extends LibraryInstaller
 {
-
     public function getInstallPath(PackageInterface $package)
     {
-        list($plugin,$path) = $this->getPluginInfo($package);
+        list($plugin, $path) = $this->getPluginInfo($package);
         return 'plugins/' . $plugin;
     }
 
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::install($repo, $package);
-        list($plugin,$path) = $this->getPluginInfo($package);
-        $this->updateTracker($plugin,$path);
+        list($plugin, $path) = $this->getPluginInfo($package);
+        $this->updateTracker($plugin, $path);
     }
  
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::uninstall($repo, $package);
-        list($plugin,$path) = $this->getPluginInfo($package);
-        $this->updateTracker($plugin,null);
+        list($plugin, $path) = $this->getPluginInfo($package);
+        $this->updateTracker($plugin, null);
     }
 
-    protected function updateTracker($plugin,$path){
+    protected function updateTracker($plugin, $path)
+    {
         $filename = $this->vendorDir . DIRECTORY_SEPARATOR . 'originphp-plugins.json';
 
-        if(!file_exists($filename)){
-            file_put_contents($filename,json_encode([]));
+        if (!file_exists($filename)) {
+            file_put_contents($filename, json_encode([]));
         }
 
-        $data = json_decode(file_get_contents($filename),true);
+        $data = json_decode(file_get_contents($filename), true);
         
-        if($path){
+        if ($path) {
             $data[$plugin] = $path;
-        }
-        else{
+        } else {
             unset($data[$plugin]);
         }
         
-        file_put_contents($filename,json_encode($data));
+        file_put_contents($filename, json_encode($data));
     }
 
     /**
@@ -69,38 +68,27 @@ class PluginInstaller extends LibraryInstaller
      * @param PackageInterface $package
      * @return void
      */
-    protected function getPluginInfo(PackageInterface $package){
-
+    protected function getPluginInfo(PackageInterface $package)
+    {
         $pluginName = null;
         $path = $this->getInstallPath($package);
 
         $autoLoaders = $package->getAutoload();
         foreach ($autoLoaders as $type => $pathMap) {
-            if($type === 'psr-4'){
-                if(count($pathMap) == 1){
-                    $pluginName = trim(key($pathMap),'\\'); 
+            if ($type === 'psr-4') {
+                if (count($pathMap) == 1) {
+                    $pluginName = trim(key($pathMap), '\\');
                     break;
                 }
-                foreach($pathMap as $ns => $path){
-                    if($path === 'src/' OR strpos($path,'/src/') !== false ){
-                        $pluginName = trim($ns,'\\'); 
+                foreach ($pathMap as $ns => $path) {
+                    if ($path === 'src/' or strpos($path, '/src/') !== false) {
+                        $pluginName = trim($ns, '\\');
                         break;
                     }
                 }
             }
         }
         return [$pluginName,$path];
-    }
-
-    /**
-     * Gets the plugin name
-     *
-     * @param PackageInterface $package
-     * @return void
-     */
-    protected function pluginName(PackageInterface $package){
-        list($plugin,$path) = $this->getPluginInfo($package);
-        return $plugin;
     }
 
     /**
@@ -112,5 +100,4 @@ class PluginInstaller extends LibraryInstaller
     {
         return 'originphp-plugin' === $packageType;
     }
-
 }
