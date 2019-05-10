@@ -24,12 +24,26 @@ use RuntimeException;
 
 class PluginInstaller extends LibraryInstaller
 {
+   
     public function getInstallPath(PackageInterface $package)
     {
+        /**
+         * Check extra data
+         */
+        $extra = $package->getExtra();
+        if(!empty($install)){
+            return "plugins/{$extra['folder']}";
+        }
+        /**
+         * To ensure its not doing this
+         */
         list($plugin, $path) = $this->getPluginName($package);
-        $path = 'plugins/' . $plugin;
-        mkdir(dirname($this->vendor) . DIRECTORY_SEPERATOR  . $path);
-        return $path;
+        if($plugin){
+            return 'plugins/' . $this->underscore($plugin);
+        }
+
+        list($username, $package) = explode('/',$package->getPrettyName());
+        return "plugins/{$package}";
     }
    
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
@@ -110,6 +124,10 @@ class PluginInstaller extends LibraryInstaller
         return $pluginName;
     }
     
+    protected function underscore(string $camelCasedWord){
+        return strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $camelCasedWord));
+    }
+
     /**
      * This is how the type is setup
      */
