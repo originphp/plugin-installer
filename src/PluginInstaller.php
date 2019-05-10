@@ -28,7 +28,7 @@ class PluginInstaller extends LibraryInstaller
         list($plugin, $path) = $this->getPluginInfo($package);
         return 'plugins/' . $plugin;
     }
-
+    /*
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::install($repo, $package);
@@ -61,6 +61,7 @@ class PluginInstaller extends LibraryInstaller
         
         file_put_contents($filename, json_encode($data));
     }
+    */
 
     /**
      * Gets the plugin Name and path
@@ -68,6 +69,7 @@ class PluginInstaller extends LibraryInstaller
      * @param PackageInterface $package
      * @return void
      */
+   
     protected function getPluginInfo(PackageInterface $package)
     {
         $pluginName = null;
@@ -90,7 +92,7 @@ class PluginInstaller extends LibraryInstaller
         }
         return [$pluginName,$path];
     }
-
+   
     /**
      * This is how the type is setup
      */

@@ -4,19 +4,19 @@
     "type": "composer-installer",
     "license": "MIT",
     "require": {
-        "composer/composer": "*"
+        "composer-plugin-api": "^1.0"
     },
     "require-dev": {
-        "composer/composer": "*"
+        "composer/composer": "^1.3"
     },
     "autoload": {
         "psr-4": {
-            "Origin\\Composer\\": "src"
+            "Origin\\Composer\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Origin\\Test\\Composer\\": "tests"
+            "Origin\\Test\\Composer\\": "tests/"
         }
     },
     "extra": {
