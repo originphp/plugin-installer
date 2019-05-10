@@ -27,7 +27,9 @@ class PluginInstaller extends LibraryInstaller
     public function getInstallPath(PackageInterface $package)
     {
         list($plugin, $path) = $this->getPluginName($package);
-        return 'plugins/' . $plugin;
+        $path = 'plugins/' . $plugin;
+        mkdir(dirname($this->vendor) . DIRECTORY_SEPERATOR  . $path);
+        return $path;
     }
    
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
