@@ -35,13 +35,12 @@ class PluginInstaller extends LibraryInstaller
             return "plugins/{$extra['folder']}";
         }
         /**
-         * To ensure its not doing this
-         */
+         Always creates empty folder
         list($plugin, $path) = $this->getPluginName($package);
         if($plugin){
             return 'plugins/' . $this->underscore($plugin);
         }
-
+        */
         list($username, $package) = explode('/',$package->getPrettyName());
         return "plugins/{$package}";
     }
