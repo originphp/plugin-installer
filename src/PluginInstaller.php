@@ -93,8 +93,6 @@ class PluginInstaller extends LibraryInstaller
 
     /**
      * This is how the type is setup
-     *
-     * @return void
      */
     public function supports($packageType)
     {
