@@ -24,22 +24,21 @@ use RuntimeException;
 
 class PluginInstaller extends LibraryInstaller
 {
-   
+
+    /**
+     * Returns the path, you cant get pluginName from ns at this stage
+     *
+     * @param PackageInterface $package
+     * @return void
+     */
     public function getInstallPath(PackageInterface $package)
     {
         /**
-         * Check extra data
+         * Check composer.json for extra data
          */
         $extra = $package->getExtra();
-        if(!empty($install)){
-            return "plugins/{$extra['folder']}";
-        }
-        
-        file_put_contents($this->vendorDir. '/debug.json',json_encode($package));
-
-        list($plugin, $path) = $this->getPluginName($package);
-        if($plugin){
-            return 'plugins/' . $this->underscore($plugin);
+        if(!empty($extra['install'])){
+            return $extra['install'];
         }
       
         list($username, $package) = explode('/',$package->getPrettyName());
@@ -122,10 +121,6 @@ class PluginInstaller extends LibraryInstaller
         return $pluginName;
     }
     
-    protected function underscore(string $camelCasedWord){
-        return strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $camelCasedWord));
-    }
-
     /**
      * This is how the type is setup
      */
