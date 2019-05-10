@@ -34,13 +34,12 @@ class PluginInstaller extends LibraryInstaller
         if(!empty($install)){
             return "plugins/{$extra['folder']}";
         }
-        /**
-         Always creates empty folder
+  
         list($plugin, $path) = $this->getPluginName($package);
         if($plugin){
             return 'plugins/' . $this->underscore($plugin);
         }
-        */
+      
         list($username, $package) = explode('/',$package->getPrettyName());
         return "plugins/{$package}";
     }
