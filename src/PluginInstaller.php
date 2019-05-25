@@ -63,7 +63,7 @@ class PluginInstaller extends LibraryInstaller
     {
         $directory = dirname($this->vendorDir);
 
-        $filename = $directory . DIRECTORY_SEPARATOR . 'originphp-plugins.json';
+        $filename = $directory . DIRECTORY_SEPARATOR . 'plugins.json';
 
         if (!file_exists($filename)) {
             file_put_contents($filename, json_encode([]));
