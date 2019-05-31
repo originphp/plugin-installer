@@ -1,7 +1,7 @@
 {
     "name": "originphp/plugin-installer",
     "description": "Installer for OriginPHP plugins",
-    "type": "composer-installer",
+    "type": "composer-plugin",
     "license": "MIT",
     "require": {
         "composer-plugin-api": "^1.0"
@@ -20,6 +20,6 @@
         }
     },
     "extra": {
-        "class": "Origin\\Composer\\PluginInstaller"
+        "class": "Origin\\Composer\\PluginInstallerPlugin"
     }
 }
