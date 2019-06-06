@@ -68,7 +68,7 @@ class PluginInstaller extends LibraryInstaller
         $data = json_decode(file_get_contents($filename), true);
         
         if ($path) {
-            $data[$plugin] = $this->vendorDir . DIRECTORY_SEPARATOR  . $path;
+            $data[$plugin] = $path;
         } else {
             unset($data[$plugin]);
         }
