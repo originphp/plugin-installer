@@ -37,12 +37,10 @@ class PluginInstaller extends LibraryInstaller
          * Check composer.json for extra data
          */
         $extra = $package->getExtra();
-        if(!empty($extra['install'])){
+        if (!empty($extra['install'])) {
             return $extra['install'];
         }
-      
-        list($username, $package) = explode('/',$package->getPrettyName());
-        return "plugins/{$package}";
+        return parent::getInstallPath($package);
     }
    
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
@@ -93,7 +91,8 @@ class PluginInstaller extends LibraryInstaller
         return [$pluginName,$path];
     }
 
-    protected function getPluginName(PackageInterface $package){
+    protected function getPluginName(PackageInterface $package)
+    {
         $pluginName = null;
         $autoLoaders = $package->getAutoload();
         
@@ -114,7 +113,7 @@ class PluginInstaller extends LibraryInstaller
 
         if (!$pluginName) {
             throw new RuntimeException(
-                sprintf("Error getting Plugin name from namespace in package %s\nCheck that psr-4 autoloaders PluginName => 'src/' ",$package->getName())
+                sprintf("Error getting Plugin name from namespace in package %s\nCheck that psr-4 autoloaders PluginName => 'src/' ", $package->getName())
             );
         }
 
