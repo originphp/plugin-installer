@@ -59,7 +59,7 @@ class PluginInstaller extends LibraryInstaller
 
     protected function updateTracker($plugin, $path)
     {
-        $filename = $this->vendorDir . DIRECTORY_SEPARATOR . 'plugins.json';
+        $filename = $this->vendorDir . DIRECTORY_SEPARATOR . 'originphp-plugins.json';
 
         if (!file_exists($filename)) {
             file_put_contents($filename, json_encode([]));
