@@ -59,9 +59,7 @@ class PluginInstaller extends LibraryInstaller
 
     protected function updateTracker($plugin, $path)
     {
-        $directory = dirname($this->vendorDir);
-
-        $filename = $directory . DIRECTORY_SEPARATOR . 'plugins.json';
+        $filename = $this->vendorDir . DIRECTORY_SEPARATOR . 'plugins.json';
 
         if (!file_exists($filename)) {
             file_put_contents($filename, json_encode([]));
@@ -70,7 +68,7 @@ class PluginInstaller extends LibraryInstaller
         $data = json_decode(file_get_contents($filename), true);
         
         if ($path) {
-            $data[$plugin] = $directory . DIRECTORY_SEPARATOR  . $path;
+            $data[$plugin] = $this->vendorDir . DIRECTORY_SEPARATOR  . $path;
         } else {
             unset($data[$plugin]);
         }
