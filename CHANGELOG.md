@@ -19,7 +19,12 @@ Upload:       git push origin --tags
 Delete tag:   git tag -d <tag_name>
 
 ## [Unreleased]
+## [1.1.1] - 2019-10-25
+### Changed
+- Removed \ from start of path for vendor directory
+
 ## [1.1.0] - 2019-05-25
+
 ### Changed
 - plugins.json filename
 
