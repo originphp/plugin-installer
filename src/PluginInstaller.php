@@ -67,7 +67,8 @@ class PluginInstaller extends LibraryInstaller
          * - plugins/user_authentication
          */
         $root = dirname($this->vendorDir);
-        $path = str_replace($root, '', ltrim($path, '/'));
+        $path = str_replace($root, '', $path);
+        $path = ltrim($path, '/');
         
         if (!file_exists($filename)) {
             file_put_contents($filename, json_encode([]));
