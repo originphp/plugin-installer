@@ -18,9 +18,15 @@ Create:       git tag -a <tag_name> -m '<tag_message>'
 Upload:       git push origin --tags
 Delete tag:   git tag -d <tag_name>
 
-## [Unreleased]
+
+## [1.4.0] - 2020-10-24
+
+## Changed
+
+- Changed to work with composer 2.0
 
 ## [1.3.2] - 2019-10-25
+
 ### Changed
 - Removed \ from start of path for vendor directory
 
