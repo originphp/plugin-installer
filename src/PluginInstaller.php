@@ -17,10 +17,11 @@
  */
 namespace Origin\Composer;
 
+use RuntimeException;
+use React\Promise\PromiseInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
-use RuntimeException;
 
 class PluginInstaller extends LibraryInstaller
 {
@@ -29,7 +30,7 @@ class PluginInstaller extends LibraryInstaller
      * Returns the path, you cant get pluginName from ns at this stage
      *
      * @param PackageInterface $package
-     * @return void
+     * @return string
      */
     public function getInstallPath(PackageInterface $package)
     {
@@ -37,22 +38,46 @@ class PluginInstaller extends LibraryInstaller
          * Check composer.json for extra data
          */
         $extra = $package->getExtra();
-        if (!empty($extra['install'])) {
+        if (! empty($extra['install'])) {
             return $extra['install'];
         }
+
         return parent::getInstallPath($package);
     }
    
+    /**
+     * Handles the Install
+     *
+     * @param InstalledRepositoryInterface $repo
+     * @param PackageInterface $package
+     * @return void
+     */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::install($repo, $package);
+        $promise = parent::install($repo, $package);
+
+        if ($promise instanceof PromiseInterface) {
+            $promise->then();
+        }
         list($plugin, $path) = $this->getPluginInfo($package);
         $this->updateTracker($plugin, $path);
     }
  
+    /**
+     * Handles the uninstall
+     *
+     * @param InstalledRepositoryInterface $repo
+     * @param PackageInterface $package
+     * @return void
+     */
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        parent::uninstall($repo, $package);
+        $promise = parent::uninstall($repo, $package);
+
+        if ($promise instanceof PromiseInterface) {
+            $promise->then();
+        }
+
         list($plugin, $path) = $this->getPluginInfo($package);
         $this->updateTracker($plugin, null);
     }
@@ -70,7 +95,7 @@ class PluginInstaller extends LibraryInstaller
         $path = str_replace($root, '', $path);
         $path = ltrim($path, '/');
         
-        if (!file_exists($filename)) {
+        if (! file_exists($filename)) {
             file_put_contents($filename, json_encode([]));
         }
 
@@ -95,6 +120,7 @@ class PluginInstaller extends LibraryInstaller
     {
         $path = $this->getInstallPath($package);
         $pluginName = $this->getPluginName($package);
+
         return [$pluginName,$path];
     }
 
@@ -118,7 +144,7 @@ class PluginInstaller extends LibraryInstaller
             }
         }
 
-        if (!$pluginName) {
+        if (! $pluginName) {
             throw new RuntimeException(
                 sprintf("Error getting Plugin name from namespace in package %s\nCheck that psr-4 autoloaders PluginName => 'src/' ", $package->getName())
             );
