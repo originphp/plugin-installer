@@ -56,11 +56,16 @@ class PluginInstaller extends LibraryInstaller
     {
         $promise = parent::install($repo, $package);
 
+        $installer = $this;
+        $updateStatus = function () use ($installer,$package) {
+            list($plugin, $path) = $installer->getPluginInfo($package);
+            $installer->updateTracker($plugin, $path);
+        };
+
         if ($promise instanceof PromiseInterface) {
-            $promise->then();
+            return $promise->then($updateStatus);
         }
-        list($plugin, $path) = $this->getPluginInfo($package);
-        $this->updateTracker($plugin, $path);
+        $updateStatus();
     }
  
     /**
@@ -74,12 +79,16 @@ class PluginInstaller extends LibraryInstaller
     {
         $promise = parent::uninstall($repo, $package);
 
-        if ($promise instanceof PromiseInterface) {
-            $promise->then();
-        }
+        $installer = $this;
+        $updateStatus = function () use ($installer,$package) {
+            list($plugin, ) = $installer->getPluginInfo($package);
+            $installer->updateTracker($plugin, null);
+        };
 
-        list($plugin, $path) = $this->getPluginInfo($package);
-        $this->updateTracker($plugin, null);
+        if ($promise instanceof PromiseInterface) {
+            return $promise->then($updateStatus);
+        }
+        $updateStatus();
     }
 
     protected function updateTracker($plugin, $path)
