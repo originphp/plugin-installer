@@ -18,6 +18,11 @@ Create:       git tag -a <tag_name> -m '<tag_message>'
 Upload:       git push origin --tags
 Delete tag:   git tag -d <tag_name>
 
+## [2.0.0] - 2021-01-14
+
+## Changed
+
+- Bumped minimum PHP version to 7.3
 
 ## [1.4.0] - 2020-10-24
 

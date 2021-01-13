@@ -4,7 +4,7 @@
     "type": "composer-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.3.0",
         "composer-plugin-api": "^1.0 || ^2.0"
     },
     "require-dev": {
